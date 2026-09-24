@@ -1,5 +1,5 @@
 (ns document-processing.governor-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [document-processing.store :as store]
             [document-processing.governor :as governor]))
 

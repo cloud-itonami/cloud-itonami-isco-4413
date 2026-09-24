@@ -1,5 +1,5 @@
 (ns document-processing.actor-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [document-processing.actor :as actor]
             [document-processing.store :as store]))
 
