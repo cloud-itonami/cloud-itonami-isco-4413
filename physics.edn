@@ -1,0 +1,32 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:physics` runs it.
+;;
+;; README "Robotics premise": a document-scanning robot performs page
+;; scanning, OCR staging and physical filing. Declared here: a page stack
+;; moved from the intake tray into the scanner's automatic document feeder,
+;; and the box of scanned originals carried to the filing room.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isco-4413"
+ :cases
+ [{:id :page-stack-to-feeder
+   :kind :manipulator
+   :procedure "arm moves a stack of pages from the intake tray into the scanner's automatic document feeder"
+   :params {:l1-m 0.35 :l2-m 0.30 :m1-kg 2.5 :m2-kg 1.8 :payload-kg 1.2
+            :from [0.40 0.05] :to [0.05 0.45] :steps 500}
+   :sweep {:param :duration-s :values [0.3 0.5 0.8 1.2 2.0]}
+   :quantity :peak-tau1-nm
+   :limit {:max 25.0 :basis "estimate: continuous shoulder torque of a ~2 kg-payload desktop arm"}
+   :boundary {:lo 0.15 :hi 3.0}}
+  {:id :originals-box-to-filing-room
+   :kind :transport
+   :procedure "courier robot carries the box of scanned originals from the scanning desk to the filing room"
+   :params {:mass-kg 40.0 :payload-kg 10.0 :v-max-mps 1.0 :a-max-mps2 0.5
+            :brake-decel-mps2 0.8 :drive-force-n 90.0 :crr 0.02
+            :cog-height-m 0.55 :support-half-length-m 0.25}
+   :sweep {:param :distance-m :values [10.0 25.0 50.0 80.0 120.0]}
+   :quantity :cycle-time-s
+   :limit {:max 60.0 :basis "estimate: one desk-to-filing-room leg so originals leave the scanning desk before the next batch arrives"}
+   :boundary {:lo 2.0 :hi 300.0}}]}
